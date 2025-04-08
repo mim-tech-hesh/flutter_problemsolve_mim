@@ -1,38 +1,101 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(CareerConnectApp());
 
-class MyApp extends StatelessWidget {
+class CareerConnectApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyHomePage());
+    return MaterialApp(
+      home:SearchProfileScreen(),
+    );
+  }
+}
+Class SearchProfilescreen extends Statefulwidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          },
+          child: AbsorbPointer( // Prevents keyboard from popping up
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Click to view profile',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+             ),
+        ),
+      ),
+    );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
+  final String profileName = 'Md. Mezbaul Islam Zion';
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile Page'),
+      ),
+      body: Center(
+        child: Text(
+          profileName,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  String displayText = 'Press the button';
+class ProfilePage extends StatelessWidget {
+  final String profileName = 'Md. Mezbaul Islam Zion';
+  final String linkedInUrl = 'https://www.linkedin.com/in/your-linkedin-id'; // Replace with actual LinkedIn profile URL
 
-  void _changeText() {
-    setState(() {
-      displayText = 'Button Pressed';
-    });
+  // Method to launch LinkedIn URL
+  _launchLinkedIn() async {
+    if (await canLaunch(linkedInUrl)) {
+      await launch(linkedInUrl);
+    } else {
+      throw 'Could not launch $linkedInUrl';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Flutter Demo')),
-      body: Center(child: Text(displayText)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _changeText,
-        child: Icon(Icons.touch_app),
+      appBar: AppBar(
+        title: Text('Profile Page'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              profileName,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _launchLinkedIn,
+              child: Text('Visit LinkedIn Profile'),
+            ),
+          ],
+        ),
       ),
     );
   }
