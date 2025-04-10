@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(A());
+void main() => runApp(MaterialApp(home: B()));
 
-class A extends StatelessWidget {
+class B extends StatefulWidget {
+  @override
+  _BState createState() => _BState();
+}
+
+class _BState extends State<B> {
+  var txt = 'Press the button';
+
   @override
   Widget build(BuildContext c) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text(
-            'Hello World!',
-            style: TextStyle(
-              fontSize: 24,
-              fontFamily: 'Arial',
-              color: Colors.blue,
-            ),
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(title: Text('Task 2')),
+      body: Center(child: Text(txt, style: TextStyle(fontSize: 22))),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => setState(() => txt = 'Button Pressed'),
+        child: Icon(Icons.touch_app),
       ),
     );
   }
