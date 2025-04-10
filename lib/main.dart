@@ -1,51 +1,38 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: L()));
+void main() => runApp(MyApp());
 
-class L extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _LState createState() => _LState();
+  Widget build(BuildContext ctx) =>
+      MaterialApp(home: GridImg(), debugShowCheckedModeBanner: false);
 }
 
-class _LState extends State<L> {
-  final _key = GlobalKey<FormState>();
-  String u = '', p = '';
+class GridImg extends StatelessWidget {
+  final imgs = List.generate(
+    10,
+    (i) => 'https://via.placeholder.com/150?text=Img+\${i+1}',
+  );
 
   @override
-  Widget build(BuildContext c) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _key,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Username'),
-                onSaved: (v) => u = v ?? '',
-                validator: (v) => v!.isEmpty ? 'Enter username' : null,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                onSaved: (v) => p = v ?? '',
-                validator: (v) => v!.isEmpty ? 'Enter password' : null,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                child: Text('Login'),
-                onPressed: () {
-                  if (_key.currentState!.validate()) {
-                    _key.currentState!.save();
-                    // Login logic here
-                  }
-                },
-              ),
-            ],
-          ),
+  Widget build(BuildContext ctx) => Scaffold(
+    appBar: AppBar(title: Text('Grid')),
+    body: Padding(
+      padding: EdgeInsets.all(8),
+      child: GridView.builder(
+        itemCount: imgs.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 1,
         ),
+        itemBuilder:
+            (ctx, i) => ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(imgs[i], fit: BoxFit.cover),
+            ),
       ),
-    );
-  }
+    ),
+  );
 }
