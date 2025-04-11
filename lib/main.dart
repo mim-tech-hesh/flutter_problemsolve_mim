@@ -4,35 +4,67 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext ctx) =>
-      MaterialApp(home: GridImg(), debugShowCheckedModeBanner: false);
+  Widget build(BuildContext context) {
+    return MaterialApp(debugShowCheckedModeBanner: false, home: BtmNav());
+  }
 }
 
-class GridImg extends StatelessWidget {
-  final imgs = List.generate(
-    10,
-    (i) => 'https://via.placeholder.com/150?text=Img+\${i+1}',
-  );
+class BtmNav extends StatefulWidget {
+  @override
+  _BtmNavState createState() => _BtmNavState();
+}
+
+class _BtmNavState extends State<BtmNav> {
+  int cur = 0;
+  final pages = [Home(), Srch(), Prof()];
 
   @override
-  Widget build(BuildContext ctx) => Scaffold(
-    appBar: AppBar(title: Text('Grid')),
-    body: Padding(
-      padding: EdgeInsets.all(8),
-      child: GridView.builder(
-        itemCount: imgs.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 1,
-        ),
-        itemBuilder:
-            (ctx, i) => ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(imgs[i], fit: BoxFit.cover),
-            ),
+  Widget build(BuildContext ctx) {
+    return Scaffold(
+      body: pages[cur],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: cur,
+        onTap: (i) => setState(() => cur = i),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
       ),
-    ),
-  );
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Home')),
+      body: Center(child: Text('Home Screen', style: TextStyle(fontSize: 24))),
+    );
+  }
+}
+
+class Srch extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Search')),
+      body: Center(
+        child: Text('Search Screen', style: TextStyle(fontSize: 24)),
+      ),
+    );
+  }
+}
+
+class Prof extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Profile')),
+      body: Center(
+        child: Text('Profile Screen', style: TextStyle(fontSize: 24)),
+      ),
+    );
+  }
 }
