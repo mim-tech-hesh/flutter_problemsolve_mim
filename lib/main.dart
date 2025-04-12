@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: MyApp()));
+void main() =>
+    runApp(MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.teal,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 6)],
-          ),
-          child: Text(
-            'Hello!',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        leading: Padding(
+          padding: EdgeInsets.all(8),
+          child: Image.asset(
+            'assets/logo.png',
+            fit: BoxFit.contain,
+          ), // Add your logo here
         ),
+        title: Text('Custom AppBar'),
+        actions: [
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+        ],
       ),
+      body: Center(child: Text('Body content here')),
     );
   }
 }
