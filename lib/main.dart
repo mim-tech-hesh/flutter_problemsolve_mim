@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+class A extends StatelessWidget {
   @override
-  Widget build(BuildContext ctx) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: LocalImg());
-  }
-}
-
-// ---------------- Local Asset Image Screen ----------------
-
-class LocalImg extends StatelessWidget {
-  @override
-  Widget build(BuildContext ctx) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Local Image')),
-      body: Center(child: Image.asset('assets/my_img.png', width: 200)),
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.amber[100],
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                blurRadius: 4,
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Text("Simple Container with Shadow"),
+        ),
+      ),
     );
   }
 }
