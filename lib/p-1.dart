@@ -1,75 +1,61 @@
 import 'package:flutter/material.dart';
 
-void main() =>
-    runApp(MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
+void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext ctx) {
+    return MaterialApp(debugShowCheckedModeBanner: false, home: DateTimePick());
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  var data = List.generate(10, (i) => 'Item ${i + 1}');
+class DateTimePick extends StatefulWidget {
+  @override
+  _DateTimePickState createState() => _DateTimePickState();
+}
+
+class _DateTimePickState extends State<DateTimePick> {
+  DateTime? dt;
+
+  void pickDate() async {
+    final d = await showDatePicker(
+      context: context,
+      initialDate: dt ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (d == null) return;
+
+    final t = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(dt ?? DateTime.now()),
+    );
+    if (t == null) return;
+
+    setState(() {
+      dt = DateTime(d.year, d.month, d.day, t.hour, t.minute);
+    });
+  }
 
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
-      appBar: AppBar(title: Text('List')),
-      body: ListView.builder(
-        itemCount: data.length,
-        itemBuilder:
-            (c, i) => Dismissible(
-              key: ValueKey(data[i]),
-              background: actBox(
-                Icons.delete,
-                Colors.red,
-                Alignment.centerLeft,
-              ),
-              secondaryBackground: actBox(
-                Icons.edit,
-                Colors.blue,
-                Alignment.centerRight,
-              ),
-              onDismissed: (dir) {
-                if (dir == DismissDirection.endToStart) {
-                  showDialog(
-                    context: ctx,
-                    builder: (_) {
-                      var ctrl = TextEditingController(text: data[i]);
-                      return AlertDialog(
-                        title: Text('Edit'),
-                        content: TextField(controller: ctrl),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              setState(() => data[i] = ctrl.text);
-                              Navigator.pop(ctx);
-                            },
-                            child: Text('Save'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  setState(() => data.removeAt(i));
-                  ScaffoldMessenger.of(
-                    ctx,
-                  ).showSnackBar(SnackBar(content: Text('Deleted')));
-                }
-              },
-              child: ListTile(title: Text(data[i])),
+      appBar: AppBar(title: Text('Pick Date & Time')),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              dt == null
+                  ? 'No selection'
+                  : '${dt!.day}/${dt!.month}/${dt!.year}  ${dt!.hour.toString().padLeft(2, '0')}:${dt!.minute.toString().padLeft(2, '0')}',
+              style: TextStyle(fontSize: 18),
             ),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: pickDate, child: Text('Select')),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget actBox(IconData ic, Color clr, Alignment pos) {
-    return Container(
-      color: clr,
-      alignment: pos,
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Icon(ic, color: Colors.white),
     );
   }
 }
