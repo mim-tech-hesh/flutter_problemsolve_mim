@@ -1,28 +1,59 @@
 import 'package:flutter/material.dart';
 
-void main() =>
-    runApp(MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
+void main() => runApp(MaterialApp(home: Home()));
 
-class MyApp extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        leading: Padding(
-          padding: EdgeInsets.all(8),
-          child: Image.asset(
-            'assets/logo.png',
-            fit: BoxFit.contain,
-          ), // Add your logo here
+      appBar: AppBar(title: Text("Drawer App")),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.purple),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+            ),
+            ListTile(
+              title: Text("Page A"),
+              onTap:
+                  () => Navigator.push(
+                    ctx,
+                    MaterialPageRoute(builder: (_) => PageA()),
+                  ),
+            ),
+            ListTile(
+              title: Text("Page B"),
+              onTap:
+                  () => Navigator.push(
+                    ctx,
+                    MaterialPageRoute(builder: (_) => PageB()),
+                  ),
+            ),
+          ],
         ),
-        title: Text('Custom AppBar'),
-        actions: [
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
-        ],
       ),
-      body: Center(child: Text('Body content here')),
+      body: Center(child: Text("Main Screen")),
     );
   }
+}
+
+class PageA extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) => Scaffold(
+    appBar: AppBar(title: Text("Page A")),
+    body: Center(child: Text("You're on Page A")),
+  );
+}
+
+class PageB extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) => Scaffold(
+    appBar: AppBar(title: Text("Page B")),
+    body: Center(child: Text("You're on Page B")),
+  );
 }
