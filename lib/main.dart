@@ -1,44 +1,28 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: AnimBox()));
+void main() => runApp(MySet());
 
-class AnimBox extends StatefulWidget {
+class MySet extends StatefulWidget {
   @override
-  _AnimBoxState createState() => _AnimBoxState();
+  _MySetState createState() => _MySetState();
 }
 
-class _AnimBoxState extends State<AnimBox> {
-  double w = 100, h = 100;
-  Color c = Colors.blue;
-  BorderRadius br = BorderRadius.circular(8);
-
-  void change() {
-    setState(() {
-      w = w == 100 ? 200 : 100;
-      h = h == 100 ? 150 : 100;
-      c = c == Colors.blue ? Colors.red : Colors.blue;
-      br =
-          br == BorderRadius.circular(8)
-              ? BorderRadius.circular(50)
-              : BorderRadius.circular(8);
-    });
-  }
+class _MySetState extends State<MySet> {
+  bool dark = false;
 
   @override
   Widget build(BuildContext ctx) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Q16")),
-      body: Center(
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 400),
-          width: w,
-          height: h,
-          decoration: BoxDecoration(color: c, borderRadius: br),
+    return MaterialApp(
+      theme: dark ? ThemeData.dark() : ThemeData.light(),
+      home: Scaffold(
+        appBar: AppBar(title: Text("Q17")),
+        body: ListTile(
+          title: Text("Dark Mode"),
+          trailing: Switch(
+            value: dark,
+            onChanged: (v) => setState(() => dark = v),
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: change,
-        child: Icon(Icons.play_arrow),
       ),
     );
   }
